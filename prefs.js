@@ -11,7 +11,7 @@ const ShortcutRow = GObject.registerClass({
     _init(shortcut, onEdit, onDelete) {
         super._init();
 
-        let box = new Gtk.Box({
+        const box = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL,
             spacing: 12,
             margin_start: 12,
@@ -21,19 +21,19 @@ const ShortcutRow = GObject.registerClass({
         });
 
         // Label and method
-        let labelBox = new Gtk.Box({
+        const labelBox = new Gtk.Box({
             orientation: Gtk.Orientation.VERTICAL,
             spacing: 4,
             hexpand: true,
         });
 
-        let labelText = new Gtk.Label({
+        const labelText = new Gtk.Label({
             label: shortcut.label,
             halign: Gtk.Align.START,
             css_classes: ['title'],
         });
 
-        let methodUrl = new Gtk.Label({
+        const methodUrl = new Gtk.Label({
             label: `${shortcut.method} ${shortcut.url}`,
             halign: Gtk.Align.START,
             css_classes: ['dim-label', 'caption'],
@@ -44,14 +44,14 @@ const ShortcutRow = GObject.registerClass({
         labelBox.append(methodUrl);
 
         // Edit button
-        let editButton = new Gtk.Button({
+        const editButton = new Gtk.Button({
             icon_name: 'document-edit-symbolic',
             valign: Gtk.Align.CENTER,
         });
         editButton.connect('clicked', () => onEdit());
 
         // Delete button
-        let deleteButton = new Gtk.Button({
+        const deleteButton = new Gtk.Button({
             icon_name: 'user-trash-symbolic',
             valign: Gtk.Align.CENTER,
         });
@@ -69,22 +69,22 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
         this._settings = this.getSettings();
 
-        let page = new Adw.PreferencesPage();
+        const page = new Adw.PreferencesPage();
         window.add(page);
 
         // Import/Export group
-        let importExportGroup = new Adw.PreferencesGroup({
+        const importExportGroup = new Adw.PreferencesGroup({
             title: 'Import/Export',
             description: 'Backup and restore your shortcuts',
         });
         page.add(importExportGroup);
 
         // Export button
-        let exportRow = new Adw.ActionRow({
+        const exportRow = new Adw.ActionRow({
             title: 'Export Shortcuts',
             subtitle: 'Save shortcuts to a JSON file',
         });
-        let exportButton = new Gtk.Button({
+        const exportButton = new Gtk.Button({
             icon_name: 'document-save-symbolic',
             valign: Gtk.Align.CENTER,
         });
@@ -95,11 +95,11 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
         importExportGroup.add(exportRow);
 
         // Import button
-        let importRow = new Adw.ActionRow({
+        const importRow = new Adw.ActionRow({
             title: 'Import Shortcuts',
             subtitle: 'Load shortcuts from a JSON file',
         });
-        let importButton = new Gtk.Button({
+        const importButton = new Gtk.Button({
             icon_name: 'document-open-symbolic',
             valign: Gtk.Align.CENTER,
         });
@@ -110,18 +110,18 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
         importExportGroup.add(importRow);
 
         // Shortcuts group
-        let group = new Adw.PreferencesGroup({
+        const group = new Adw.PreferencesGroup({
             title: 'API Shortcuts',
             description: 'Configure your API shortcuts',
         });
         page.add(group);
 
         // Add button
-        let addRow = new Adw.ActionRow({
+        const addRow = new Adw.ActionRow({
             title: 'Add New Shortcut',
         });
 
-        let addButton = new Gtk.Button({
+        const addButton = new Gtk.Button({
             icon_name: 'list-add-symbolic',
             valign: Gtk.Align.CENTER,
         });
@@ -151,7 +151,7 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
         // Clear existing rows
         let child = this._listBox.get_first_child();
         while (child) {
-            let next = child.get_next_sibling();
+            const next = child.get_next_sibling();
             this._listBox.remove(child);
             child = next;
         }
@@ -159,17 +159,16 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
         // Load shortcuts from settings
         let shortcuts = [];
         try {
-            let data = this._settings.get_string('shortcuts');
-            if (data) {
+            const data = this._settings.get_string('shortcuts');
+            if (data)
                 shortcuts = JSON.parse(data);
-            }
         } catch (e) {
             console.error('Failed to load shortcuts:', e);
         }
 
         // Add rows
         shortcuts.forEach((shortcut, index) => {
-            let row = new ShortcutRow(
+            const row = new ShortcutRow(
                 shortcut,
                 () => this._showEditDialog(this._listBox.get_root(), shortcut, index),
                 () => this._deleteShortcut(index)
@@ -178,7 +177,7 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
         });
 
         if (shortcuts.length === 0) {
-            let emptyLabel = new Gtk.Label({
+            const emptyLabel = new Gtk.Label({
                 label: 'No shortcuts configured yet',
                 margin_top: 24,
                 margin_bottom: 24,
@@ -189,58 +188,60 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
     }
 
     _showEditDialog(parent, shortcut, index) {
-        let dialog = new Adw.Dialog({
+        const dialog = new Adw.Dialog({
             title: shortcut ? 'Edit Shortcut' : 'New Shortcut',
             content_width: 600,
             content_height: 700,
         });
 
-        let toolbar = new Adw.ToolbarView();
-        let header = new Adw.HeaderBar();
+        const toolbar = new Adw.ToolbarView();
+        const header = new Adw.HeaderBar();
         toolbar.add_top_bar(header);
 
-        let content = new Adw.PreferencesPage();
-        let group = new Adw.PreferencesGroup();
+        const content = new Adw.PreferencesPage();
+        const group = new Adw.PreferencesGroup();
         content.add(group);
 
         // Label entry
-        let labelRow = new Adw.EntryRow({
+        const labelRow = new Adw.EntryRow({
             title: 'Label',
         });
-        if (shortcut) labelRow.text = shortcut.label;
+        if (shortcut)
+            labelRow.text = shortcut.label;
         group.add(labelRow);
 
         // URL entry
-        let urlRow = new Adw.EntryRow({
+        const urlRow = new Adw.EntryRow({
             title: 'URL',
         });
-        if (shortcut) urlRow.text = shortcut.url;
+        if (shortcut)
+            urlRow.text = shortcut.url;
         group.add(urlRow);
 
         // Method dropdown
-        let methodRow = new Adw.ComboRow({
+        const methodRow = new Adw.ComboRow({
             title: 'HTTP Method',
         });
-        let methodModel = Gtk.StringList.new(['GET', 'POST', 'PUT', 'PATCH', 'DELETE']);
+        const methodModel = Gtk.StringList.new(['GET', 'POST', 'PUT', 'PATCH', 'DELETE']);
         methodRow.model = methodModel;
         if (shortcut) {
-            let methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+            const methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
             methodRow.selected = methods.indexOf(shortcut.method);
         }
         group.add(methodRow);
 
         // Headers
-        let headersExpander = new Adw.ExpanderRow({
+        const headersExpander = new Adw.ExpanderRow({
             title: 'HTTP Headers',
             subtitle: 'One per line: Header-Name: value',
         });
         group.add(headersExpander);
 
-        let headersBuffer = new Gtk.TextBuffer();
-        if (shortcut && shortcut.headers) {
+        const headersBuffer = new Gtk.TextBuffer();
+        if (shortcut && shortcut.headers)
             headersBuffer.set_text(shortcut.headers, -1);
-        }
-        let headersView = new Gtk.TextView({
+
+        const headersView = new Gtk.TextView({
             buffer: headersBuffer,
             top_margin: 12,
             bottom_margin: 12,
@@ -248,24 +249,24 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
             right_margin: 12,
             height_request: 120,
         });
-        let headersScroll = new Gtk.ScrolledWindow({
+        const headersScroll = new Gtk.ScrolledWindow({
             child: headersView,
             vexpand: true,
         });
         headersExpander.add_row(new Adw.PreferencesRow({child: headersScroll}));
 
         // Body
-        let bodyExpander = new Adw.ExpanderRow({
+        const bodyExpander = new Adw.ExpanderRow({
             title: 'Request Body (JSON)',
             subtitle: 'For POST/PUT/PATCH requests',
         });
         group.add(bodyExpander);
 
-        let bodyBuffer = new Gtk.TextBuffer();
-        if (shortcut && shortcut.body) {
+        const bodyBuffer = new Gtk.TextBuffer();
+        if (shortcut && shortcut.body)
             bodyBuffer.set_text(shortcut.body, -1);
-        }
-        let bodyView = new Gtk.TextView({
+
+        const bodyView = new Gtk.TextView({
             buffer: bodyBuffer,
             top_margin: 12,
             bottom_margin: 12,
@@ -274,14 +275,14 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
             height_request: 120,
             monospace: true,
         });
-        let bodyScroll = new Gtk.ScrolledWindow({
+        const bodyScroll = new Gtk.ScrolledWindow({
             child: bodyView,
             vexpand: true,
         });
         bodyExpander.add_row(new Adw.PreferencesRow({child: bodyScroll}));
 
         // Buttons
-        let buttonBox = new Gtk.Box({
+        const buttonBox = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL,
             spacing: 6,
             margin_top: 24,
@@ -291,18 +292,18 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
             halign: Gtk.Align.END,
         });
 
-        let cancelButton = new Gtk.Button({
+        const cancelButton = new Gtk.Button({
             label: 'Cancel',
         });
         cancelButton.connect('clicked', () => dialog.close());
 
-        let saveButton = new Gtk.Button({
+        const saveButton = new Gtk.Button({
             label: 'Save',
             css_classes: ['suggested-action'],
         });
         saveButton.connect('clicked', () => {
-            let methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-            let newShortcut = {
+            const methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+            const newShortcut = {
                 label: labelRow.text,
                 url: urlRow.text,
                 method: methods[methodRow.selected],
@@ -326,19 +327,18 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
     _saveShortcut(shortcut, index) {
         let shortcuts = [];
         try {
-            let data = this._settings.get_string('shortcuts');
-            if (data) {
+            const data = this._settings.get_string('shortcuts');
+            if (data)
                 shortcuts = JSON.parse(data);
-            }
         } catch (e) {
             console.error('Failed to load shortcuts:', e);
         }
 
-        if (index !== null && index !== undefined) {
+        if (index !== null && index !== undefined)
             shortcuts[index] = shortcut;
-        } else {
+        else
             shortcuts.push(shortcut);
-        }
+
 
         this._settings.set_string('shortcuts', JSON.stringify(shortcuts));
     }
@@ -346,10 +346,9 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
     _deleteShortcut(index) {
         let shortcuts = [];
         try {
-            let data = this._settings.get_string('shortcuts');
-            if (data) {
+            const data = this._settings.get_string('shortcuts');
+            if (data)
                 shortcuts = JSON.parse(data);
-            }
         } catch (e) {
             console.error('Failed to load shortcuts:', e);
         }
@@ -363,10 +362,9 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
 
         let shortcuts = [];
         try {
-            let data = this._settings.get_string('shortcuts');
-            if (data) {
+            const data = this._settings.get_string('shortcuts');
+            if (data)
                 shortcuts = JSON.parse(data);
-            }
         } catch (e) {
             console.error('[API Shortcuts] Failed to load shortcuts for export:', e);
             this._showErrorDialog(window, 'Export Failed', 'Could not load shortcuts');
@@ -379,26 +377,26 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
         }
 
         // Create file chooser dialog
-        let dialog = new Gtk.FileDialog({
+        const dialog = new Gtk.FileDialog({
             title: 'Export Shortcuts',
             modal: true,
         });
 
         // Set default filename
-        let timestamp = new Date().toISOString().split('T')[0];
+        const timestamp = new Date().toISOString().split('T')[0];
         dialog.set_initial_name(`api-shortcuts-${timestamp}.json`);
 
         // Show save dialog
         dialog.save(window, null, (source, result) => {
             try {
-                let file = dialog.save_finish(result);
+                const file = dialog.save_finish(result);
                 if (file) {
-                    let path = file.get_path();
+                    const path = file.get_path();
                     console.log('[API Shortcuts] Exporting to:', path);
 
                     // Write shortcuts to file
-                    let contents = JSON.stringify(shortcuts, null, 2);
-                    let success = GLib.file_set_contents(path, contents);
+                    const contents = JSON.stringify(shortcuts, null, 2);
+                    const success = GLib.file_set_contents(path, contents);
 
                     if (success) {
                         console.log('[API Shortcuts] Export successful');
@@ -418,65 +416,56 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
 
 
     _importShortcuts(window) {
-        console.log('[API Shortcuts] Starting import');
-
         // Create file chooser dialog
-        let fileFilter = new Gtk.FileFilter();
+        const fileFilter = new Gtk.FileFilter();
         fileFilter.set_name('JSON Files');
         fileFilter.add_mime_type('application/json');
         fileFilter.add_pattern('*.json');
 
-        let filterList = Gio.ListStore.new(Gtk.FileFilter);
+        const filterList = Gio.ListStore.new(Gtk.FileFilter);
         filterList.append(fileFilter);
 
-        let dialog = new Gtk.FileDialog({
+        const dialog = new Gtk.FileDialog({
             title: 'Import Shortcuts',
             modal: true,
             filters: filterList,
             default_filter: fileFilter,
         });
 
-        console.log('[API Shortcuts] Opening file dialog');
-
         // Show open dialog with proper async handling
-        dialog.open(window, null, (dialog, result) => {
-            console.log('[API Shortcuts] File dialog callback triggered');
-
+        dialog.open(window, null, (fileDialog, result) => {
             try {
-                let file = dialog.open_finish(result);
+                const file = fileDialog.open_finish(result);
                 console.log('[API Shortcuts] File selected:', file ? file.get_path() : 'none');
 
                 if (file) {
-                    let path = file.get_path();
+                    const path = file.get_path();
                     console.log('[API Shortcuts] Importing from:', path);
 
                     // Read file contents
-                    let [success, contents] = GLib.file_get_contents(path);
+                    const [success, contents] = GLib.file_get_contents(path);
 
-                    if (!success) {
+                    if (!success)
                         throw new Error('Failed to read file');
-                    }
+
 
                     // Parse JSON
-                    let decoder = new TextDecoder('utf-8');
-                    let text = decoder.decode(contents);
-                    console.log('[API Shortcuts] File contents length:', text.length);
+                    const decoder = new TextDecoder('utf-8');
+                    const text = decoder.decode(contents);
 
-                    let importedShortcuts = JSON.parse(text);
+                    const importedShortcuts = JSON.parse(text);
                     console.log('[API Shortcuts] Parsed shortcuts:', importedShortcuts.length);
 
                     // Validate shortcuts structure
-                    if (!Array.isArray(importedShortcuts)) {
+                    if (!Array.isArray(importedShortcuts))
                         throw new Error('Invalid file format: expected array of shortcuts');
-                    }
 
-                    for (let shortcut of importedShortcuts) {
-                        if (!shortcut.label || !shortcut.url || !shortcut.method) {
+
+                    for (const shortcut of importedShortcuts) {
+                        if (!shortcut.label || !shortcut.url || !shortcut.method)
                             throw new Error('Invalid shortcut format: missing required fields (label, url, or method)');
-                        }
                     }
 
-                    console.log('[API Shortcuts] Validation passed, showing confirm dialog');
                     // Show confirmation dialog
                     this._showImportConfirmDialog(window, importedShortcuts);
                 }
@@ -489,7 +478,7 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
     }
 
     _showImportConfirmDialog(window, importedShortcuts) {
-        let dialog = new Adw.AlertDialog({
+        const dialog = new Adw.AlertDialog({
             heading: 'Import Shortcuts',
             body: `Found ${importedShortcuts.length} shortcut(s).\n\nHow would you like to import them?`,
         });
@@ -513,15 +502,14 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
                 console.log('[API Shortcuts] Appending shortcuts');
                 let existing = [];
                 try {
-                    let data = this._settings.get_string('shortcuts');
-                    if (data) {
+                    const data = this._settings.get_string('shortcuts');
+                    if (data)
                         existing = JSON.parse(data);
-                    }
                 } catch (e) {
                     console.error('[API Shortcuts] Failed to load existing shortcuts:', e);
                 }
 
-                let combined = existing.concat(importedShortcuts);
+                const combined = existing.concat(importedShortcuts);
                 this._settings.set_string('shortcuts', JSON.stringify(combined));
                 this._showInfoDialog(window, 'Import Complete',
                     `Added ${importedShortcuts.length} shortcut(s). Total: ${combined.length}`);
@@ -532,9 +520,9 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
     }
 
     _showErrorDialog(window, heading, body) {
-        let dialog = new Adw.AlertDialog({
-            heading: heading,
-            body: body,
+        const dialog = new Adw.AlertDialog({
+            heading,
+            body,
         });
         dialog.add_response('ok', 'OK');
         dialog.set_default_response('ok');
@@ -542,9 +530,9 @@ export default class ApiShortcutsPreferences extends ExtensionPreferences {
     }
 
     _showInfoDialog(window, heading, body) {
-        let dialog = new Adw.AlertDialog({
-            heading: heading,
-            body: body,
+        const dialog = new Adw.AlertDialog({
+            heading,
+            body,
         });
         dialog.add_response('ok', 'OK');
         dialog.set_default_response('ok');
