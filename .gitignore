@@ -1,0 +1,46 @@
+# Compiled source
+*.o
+*.so
+*.a
+*.pyc
+*.pyo
+*.pyd
+
+# Build directories
+/build/
+/dist/
+/node_modules/
+
+# Local configuration
+.env
+.env.local
+*.swp
+*.swo
+*.bak
+*.orig
+*~
+.DS_Store
+
+# GNOME Shell extension metadata and build files
+/metadata.json
+/schemas/
+/locale/
+/po/
+*.pot
+*.gmo
+
+# IDE/Editor files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Logs and temporary files
+*.log
+*.tmp
+/tmp/
+/temp/
+
+# GNOME Shell extension specific
+/prefs.js
+
