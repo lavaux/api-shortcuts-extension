@@ -6,6 +6,6 @@
     "48", "49"
   ],
   "version": 1,
-  "url": "https://github.com/yourusername/api-shortcuts",
+  "url": "https://github.com/lavaux/api-shortcuts",
   "settings-schema": "org.gnome.shell.extensions.api-shortcuts"
 }

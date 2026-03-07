@@ -30,7 +30,7 @@ A GNOME Shell extension that allows you to execute HTTP/HTTPS REST API requests 
 
 4. Enable the extension:
 ```bash
-gnome-extensions enable api-shortcuts@your-domain.com
+gnome-extensions enable api-shortcuts@guilhem-lavaux.eu
 ```
 
 ### Manual Installation
