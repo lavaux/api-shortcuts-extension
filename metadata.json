@@ -6,8 +6,8 @@
     "48",
     "49"
   ],
-  "version": 2,
+  "version": 3,
   "url": "https://github.com/lavaux/api-shortcuts",
   "settings-schema": "org.gnome.shell.extensions.api-shortcuts",
-  "version-name": "1.0.0"
+  "version-name": "1.0.1"
 }
