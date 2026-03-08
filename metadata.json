@@ -3,9 +3,11 @@
   "description": "Execute HTTP/HTTPS REST API requests from GNOME Shell menu",
   "uuid": "api-shortcuts@guilhem-lavaux.eu",
   "shell-version": [
-    "48", "49"
+    "48",
+    "49"
   ],
-  "version": 1,
+  "version": 2,
   "url": "https://github.com/lavaux/api-shortcuts",
-  "settings-schema": "org.gnome.shell.extensions.api-shortcuts"
+  "settings-schema": "org.gnome.shell.extensions.api-shortcuts",
+  "version-name": "1.0.0"
 }
