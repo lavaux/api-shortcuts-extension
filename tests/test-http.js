@@ -2,7 +2,7 @@
  * test-http.js — GJS ES-module HTTP connectivity test
  *
  * Exercises the same Soup.Session code-path used by the extension's
- * _executeRequest() method.  Run it inside the gnome-shell-pod container
+ * _executeRequest() method.  Run it inside the ddterm/gnome-shell-image container
  * after starting tests/mock-server.py.
  *
  * Usage (inside container):

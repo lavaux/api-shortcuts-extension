@@ -25,7 +25,7 @@ bash install.sh
 
 ## Running tests
 
-Tests run the extension inside a [gnome-shell-pod](https://github.com/Schneegans/gnome-shell-pod)
+Tests run the extension inside a [gnome-shell-image](https://github.com/ddterm/gnome-shell-image)
 container via **Podman**.  Build the ZIP first, then:
 
 ```bash
@@ -76,6 +76,9 @@ GitHub Actions (`.github/workflows/tests.yml`) runs the full matrix on:
 
 Matrix: GNOME Shell versions **48 × 49 × 50** × sessions **gnome-xsession ×
 gnome-wayland-nested** (6 jobs total).
+
+**Note:** Uses [ddterm/gnome-shell-image](https://github.com/ddterm/gnome-shell-image) container images
+as the replacement for the deprecated Schneegans/gnome-shell-pod.
 
 Failure artifacts (screenshots + journal log) are uploaded under
 `test-output_<version>_<session>`.
