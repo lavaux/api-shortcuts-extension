@@ -1,0 +1,48 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'pull_request' ||
+      ( contains(github.ref, 'main') && !contains(github.event.head_commit.message, '[no-ci]') ) ||
+      contains(github.event.head_commit.message, '[run-ci]')
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - '48'
+          - '49'
+          - '50'
+        session:
+          - 'gnome-xsession'
+          - 'gnome-wayland-nested'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Download Dependencies
+      run: |
+        sudo apt update -qq
+        sudo apt install gettext -qq
+    - name: Build Extension
+      run: bash pack.sh
+    - name: Test Extension
+      run: sudo $GITHUB_WORKSPACE/run-test.sh -v ${{ matrix.version }} -s ${{ matrix.session }}
+    - uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: log_${{ matrix.version }}_${{ matrix.session }}
+        path: fail.log
+    - uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: screen_${{ matrix.version }}_${{ matrix.session }}
+        path: fail.png
