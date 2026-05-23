@@ -20,14 +20,14 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '48'
-          - '49'
-          - '50'
+          - '42'   # Fedora 42 = GNOME Shell 48
+          - '43'   # Fedora 43 = GNOME Shell 49
+          - '44'   # Fedora 44 = GNOME Shell 50
         session:
           - 'gnome-xsession'
           - 'gnome-wayland-nested'
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Download Dependencies
       run: |
         sudo apt update -qq
@@ -35,14 +35,9 @@ jobs:
     - name: Build Extension
       run: bash pack.sh
     - name: Test Extension
-      run: sudo $GITHUB_WORKSPACE/run-test.sh -v ${{ matrix.version }} -s ${{ matrix.session }}
+      run: bash tests/run-test.sh -v ${{ matrix.version }} -s ${{ matrix.session }}
     - uses: actions/upload-artifact@v4
       if: failure()
       with:
-        name: log_${{ matrix.version }}_${{ matrix.session }}
-        path: fail.log
-    - uses: actions/upload-artifact@v4
-      if: failure()
-      with:
-        name: screen_${{ matrix.version }}_${{ matrix.session }}
-        path: fail.png
+        name: test-output_${{ matrix.version }}_${{ matrix.session }}
+        path: tests/output/
